@@ -15,19 +15,10 @@ import com.universityapp.users.repositories.UserRepository;
 @EntityScan(basePackages = {
         "com.universityapp.users.entities"
 })
-public class UniversityApplication implements CommandLineRunner {
-    @Autowired
-    private UserRepository userRepository;
+public class UniversityApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(UniversityApplication.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-        // this.userRepository.insertUser("baothai@gmail.com");
-        List<UserDTO> res = this.userRepository.findAllUser();
-        System.out.println(res.getFirst().getEmail());
     }
 
 }
