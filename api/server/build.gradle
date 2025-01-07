@@ -1,0 +1,7 @@
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+        implementation "com.mysql:mysql-connector-j:${mysqlConnectorVersion}"
+
+    implementation project(":modules:auth")
+    implementation project(":modules:users")
+}
