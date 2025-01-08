@@ -1,33 +1,30 @@
 package com.universityapp.server;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-import com.universityapp.users.dtos.projection.UserDTO;
-import com.universityapp.users.repositories.UserRepository;
-
 @SpringBootApplication(scanBasePackages = "com.universityapp")
 @EntityScan(basePackages = {
-        "com.universityapp.users.entities"
+        "com.universityapp.users.entities",
+        "com.universityapp.files.entities",
+        "com.universityapp.admin.entities",
+        "com.universityapp.certificates.entities",
+        "com.universityapp.faculities.entities",
+        "com.universityapp.majors.entities",
+        "com.universityapp.faculity_teachers.entities",
+        "com.universityapp.major_teachers.entities",
+        "com.universityapp.subjects.entities",
+        "com.universityapp.subject_teachers.entities",
+        "com.universityapp.courses.entities",
+        "com.universityapp.student_subjects.entities",
+        "com.universityapp.notification.entities",
+        "com.universityapp.course_students.entities",
+        "com.universityapp.common.enums"
 })
-public class UniversityApplication implements CommandLineRunner {
-    @Autowired
-    private UserRepository userRepository;
-
+public class UniversityApplication {
     public static void main(String[] args) {
         SpringApplication.run(UniversityApplication.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-        // this.userRepository.insertUser("baothai@gmail.com");
-        List<UserDTO> res = this.userRepository.findAllUser();
-        System.out.println(res.getFirst().getEmail());
     }
 
 }

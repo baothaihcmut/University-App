@@ -1,0 +1,6 @@
+dependencies {
+        implementation project(":modules:majors")
+        implementation project(":common")
+
+
+}

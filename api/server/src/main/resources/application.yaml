@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/university_app}
-    username: ${DB_USERNAME:thaibao}
-    password: ${DB_PASSWORD:22042004bao}
+    url: ${DB_URL:jdbc:postgresql://db.upvbjvqdkavexwpnpcxi.supabase.co:5432/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:KxRpHkcGH2jqGrxj}
     driverClassName: org.postgresql.Driver
   jpa:
     show-sql: true

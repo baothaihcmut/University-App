@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(":modules:courses")
+    implementation project(":modules:users")
+
+}

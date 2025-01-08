@@ -2,8 +2,13 @@ package com.universityapp.users.dtos.projection;
 
 import java.util.UUID;
 
-public interface UserDTO {
-    UUID getUserId();
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-    String getEmail();
+@Data
+@AllArgsConstructor
+public class UserDTO {
+    UUID userId;
+
+    String email;
 }

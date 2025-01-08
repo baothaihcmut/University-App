@@ -1,7 +1,19 @@
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-        implementation "com.mysql:mysql-connector-j:${mysqlConnectorVersion}"
-
     implementation project(":modules:auth")
     implementation project(":modules:users")
+    implementation project(":modules:files")
+    implementation project(":modules:admin")
+    implementation project(":modules:certificates")
+    implementation project(":modules:faculities")
+    implementation project(":modules:majors")
+    implementation project(":modules:faculity_teachers")
+    implementation project(":modules:major_teachers")
+    implementation project(":modules:subjects")
+    implementation project(":modules:subject_teachers")
+    implementation project(":modules:courses")
+    implementation project(":modules:course_students")
+    implementation project(":modules:student_subjects")
+    implementation project(":modules:notification")
+    implementation project(":common")
+
 }
