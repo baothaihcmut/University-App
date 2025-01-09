@@ -23,7 +23,6 @@ import lombok.Data;
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @Column(name = "user_id")
     private UUID userId;
@@ -36,6 +35,12 @@ public class User {
 
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
+
+    @Column(name = "password", columnDefinition = "TEXT")
+    private String password;
+
+    @Column(name = "current_refresh_token", columnDefinition = "TEXT")
+    private String currentRefreshToken;
 
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
@@ -56,15 +61,12 @@ public class User {
     @Column(name = "address", columnDefinition = "TEXT")
     private String address;
 
-    @Column(name = "student_id", length = 255)
-    private String studentId;
-
-    @Column(name = "teacher_id", length = 255)
-    private String teacherId;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean isActive;
 
     @OneToOne(mappedBy = "user")
     @JsonManagedReference

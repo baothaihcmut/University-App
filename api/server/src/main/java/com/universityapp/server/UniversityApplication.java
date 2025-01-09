@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
         "com.universityapp.common.enums"
 })
 public class UniversityApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(UniversityApplication.class, args);
     }
