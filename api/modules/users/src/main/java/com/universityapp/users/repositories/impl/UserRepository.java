@@ -6,9 +6,9 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import com.universityapp.auth.dtos.internal.CreateUserDTO;
 import com.universityapp.common.dtos.FindByCriteriaDTO;
 import com.universityapp.common.enums.FindByCriteriaType;
-import com.universityapp.users.dtos.internal.CreateUserDTO;
 import com.universityapp.users.dtos.internal.UpdateUserDTO;
 import com.universityapp.users.dtos.internal.UserDTO;
 import com.universityapp.users.repositories.IUserRepository;
@@ -35,8 +35,8 @@ public class UserRepository implements IUserRepository {
 
     public void createUser(CreateUserDTO dto) {
         String sql = """
-                INSERT INTO users (user_id, first_name, last_name, email, password, phone_number, birthplace, birthday, social_network_info, address, role, is_active)
-                VALUES (:userId, :firstName, :lastName, :email, :password, :phoneNumber, :birthplace, :birthday, :socialNetworkInfo, :address, :role, :isActive)
+                INSERT INTO users (user_id, first_name, last_name, email, password, phone_number, birthplace, birthday, social_network_info, address, role, is_active,current_refresh_token)
+                VALUES (:userId, :firstName, :lastName, :email, :password, :phoneNumber, :birthplace, :birthday, :socialNetworkInfo, :address, :role, :isActive,:currentRefreshToken)
                 """;
 
         Query query = this.entityManager.createNativeQuery(sql);
@@ -52,6 +52,7 @@ public class UserRepository implements IUserRepository {
         query.setParameter("address", dto.getAddress());
         query.setParameter("role", dto.getRole().getValue());
         query.setParameter("isActive", dto.getIsActive());
+        query.setParameter("currentRefreshToken", dto.getCurrentRefreshToken());
         query.executeUpdate();
     }
 

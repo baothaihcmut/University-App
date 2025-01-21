@@ -1,12 +1,12 @@
-package com.universityapp.users.mappers;
+package com.universityapp.auth.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import com.universityapp.auth.dtos.internal.CreateUserDTO;
 import com.universityapp.auth.dtos.request.SignUpRequestDTO;
 import com.universityapp.common.enums.Role;
-import com.universityapp.users.dtos.internal.CreateUserDTO;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {

@@ -19,12 +19,14 @@ import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.universityapp.auth.dtos.internal.AdminDTO;
+import com.universityapp.auth.dtos.internal.CreateUserDTO;
 import com.universityapp.auth.dtos.internal.UserContext;
 import com.universityapp.auth.dtos.internal.UserDTO;
 import com.universityapp.auth.dtos.request.LoginRequestDTO;
 import com.universityapp.auth.dtos.request.SignUpRequestDTO;
 import com.universityapp.auth.dtos.response.LoginResponseDTO;
 import com.universityapp.auth.dtos.response.TokenResponse;
+import com.universityapp.auth.mappers.UserMapper;
 import com.universityapp.auth.services.IAdminAuthService;
 import com.universityapp.auth.services.IAuthService;
 import com.universityapp.auth.services.IUserAuthService;
@@ -57,6 +59,7 @@ public class AuthService implements IAuthService {
     private final IUserAuthService userService;
     private final IAdminAuthService adminService;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     private String genAccessToken(UUID userId, Role role) throws Exception {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
@@ -153,16 +156,19 @@ public class AuthService implements IAuthService {
         }
 
         // encrypt password
-        dto.setPassword(this.passwordEncoder.encode(dto.getPassword()));
-        // create new user
-        UserDTO userDTO = this.userService.createUser(dto);
+        CreateUserDTO createUserDTO = this.userMapper.toCreateUserDTO(dto);
+        createUserDTO.setUserId(UUID.randomUUID());
+        createUserDTO.setIsActive(true);
+        createUserDTO.setPassword(this.passwordEncoder.encode(dto.getPassword()));
         // generate token for new user
-        String accessToken = this.genAccessToken(userDTO.getUserId(), userDTO.getRole());
-        String refreshToken = this.genRefreshToken(userDTO.getUserId());
+        String accessToken = this.genAccessToken(createUserDTO.getUserId(), createUserDTO.getRole());
+        String refreshToken = this.genRefreshToken(createUserDTO.getUserId());
+        createUserDTO.setCurrentRefreshToken(refreshToken);
+        this.userService.createUser(createUserDTO);
         // update new accessToken
-        this.userService.updateCurrentRefreshToken(userDTO.getUserId(), refreshToken);
-        return LoginResponseDTO.builder().isActive(userDTO.getIsActive())
-                .role(userDTO.getRole())
+
+        return LoginResponseDTO.builder().isActive(createUserDTO.getIsActive())
+                .role(createUserDTO.getRole())
                 .token(
                         TokenResponse.builder().accessToken(accessToken)
                                 .refreshToken(refreshToken)

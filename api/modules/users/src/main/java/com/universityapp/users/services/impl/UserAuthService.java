@@ -7,13 +7,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.universityapp.auth.dtos.internal.UserDTO;
-import com.universityapp.auth.dtos.request.SignUpRequestDTO;
 import com.universityapp.auth.services.IUserAuthService;
 import com.universityapp.common.dtos.FindByCriteriaDTO;
 import com.universityapp.common.enums.FindByCriteriaType;
-import com.universityapp.users.dtos.internal.CreateUserDTO;
 import com.universityapp.users.dtos.internal.UpdateUserDTO;
-import com.universityapp.users.mappers.UserMapper;
 import com.universityapp.users.repositories.IUserRepository;
 import com.universityapp.users.repositories.impl.UserField;
 
@@ -24,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserAuthService implements IUserAuthService {
     private final IUserRepository userRepository;
-
-    private final UserMapper userMapper;
 
     @Override
     public Optional<UserDTO> findUserByEmail(String email) {
@@ -51,19 +46,8 @@ public class UserAuthService implements IUserAuthService {
 
     @Override
     @Transactional
-    public UserDTO createUser(SignUpRequestDTO requestDTO) {
-        CreateUserDTO dto = this.userMapper.toCreateUserDTO(requestDTO);
-        System.out.println(dto.getRole());
-        dto.setUserId(UUID.randomUUID());
-        dto.setIsActive(false);
+    public void createUser(com.universityapp.auth.dtos.internal.CreateUserDTO dto) {
         this.userRepository.createUser(dto);
-        return new UserDTO(
-                dto.getUserId(),
-                dto.getEmail(),
-                dto.getPassword(),
-                dto.getRole(),
-                dto.getIsActive(),
-                null);
     }
 
     @Override

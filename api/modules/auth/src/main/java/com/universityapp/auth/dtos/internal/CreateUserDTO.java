@@ -1,4 +1,4 @@
-package com.universityapp.users.dtos.internal;
+package com.universityapp.auth.dtos.internal;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -38,5 +38,7 @@ public class CreateUserDTO {
     private Role role;
 
     private Boolean isActive;
+
+    private String currentRefreshToken;
 
 }
