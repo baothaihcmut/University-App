@@ -15,5 +15,4 @@ dependencies {
     implementation project(":modules:student_subjects")
     implementation project(":modules:notification")
     implementation project(":common")
-
 }

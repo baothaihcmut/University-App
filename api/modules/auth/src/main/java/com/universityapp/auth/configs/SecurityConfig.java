@@ -32,7 +32,7 @@ public class SecurityConfig {
     @Value("${jwt.access_token.sign_key}")
     private String signerKey;
 
-    private static final String[] PUBLIC_ENDPOINTS = { "/auth/log-in", "/auth/sign-up" };
+    private static final String[] PUBLIC_ENDPOINTS = { "/auth/log-in", "/auth/sign-up", "/auth/admin/log-in" };
 
     private final AccessDeniedHandler accessDeniedHandler;
 

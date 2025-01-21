@@ -1,1 +1,5 @@
-dependencies {}
+dependencies {
+    implementation project(":common")
+    implementation project(":modules:auth")
+
+}

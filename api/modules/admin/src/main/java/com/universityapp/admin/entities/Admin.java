@@ -14,7 +14,7 @@ import lombok.Data;
 public class Admin {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "admin_id")
     private UUID id;
 
     @Column(name = "first_name", nullable = false)
@@ -25,6 +25,12 @@ public class Admin {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "password", columnDefinition = "TEXT", nullable = false)
+    private String password;
+
+    @Column(name = "current_refresh_token", columnDefinition = "TEXT", nullable = true)
+    private String currentRefreshToken;
 
     @Column(name = "phone_number")
     private String phoneNumber;

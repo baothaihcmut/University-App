@@ -1,5 +1,7 @@
 server:
   port: 3000
+  servlet:
+    contextPath: /api/v1
 
 spring:
   datasource:
@@ -12,6 +14,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+
 jwt:
   access_token:
     sign_key: your_accesstoken_key111111111111111111111
