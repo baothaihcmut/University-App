@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.universityapp.auth.dtos.internal.CreateUserDTO;
-import com.universityapp.common.dtos.FindByCriteriaDTO;
 import com.universityapp.common.enums.FindByCriteriaType;
+import com.universityapp.common.filters.FilterDTO;
 import com.universityapp.users.dtos.internal.UpdateUserDTO;
 import com.universityapp.users.dtos.internal.UserDTO;
 import com.universityapp.users.repositories.impl.UserField;
@@ -15,6 +15,6 @@ public interface IUserRepository {
 
     void updateUser(UUID id, UpdateUserDTO dto);
 
-    List<UserDTO> findUserByCriteria(List<FindByCriteriaDTO<UserField>> dtos, FindByCriteriaType type);
+    List<UserDTO> findUserByCriteria(List<FilterDTO<UserField>> dtos, FindByCriteriaType type);
 
 }

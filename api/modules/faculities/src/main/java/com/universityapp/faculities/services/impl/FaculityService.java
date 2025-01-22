@@ -6,8 +6,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.universityapp.faculities.dtos.internal.CreateFaculityDTO;
+import com.universityapp.faculities.dtos.internal.UpdateFaculityDTO;
 import com.universityapp.faculities.dtos.request.CreateFaculityRequestDTO;
+import com.universityapp.faculities.dtos.request.UpdateFaculityRequestDTO;
 import com.universityapp.faculities.dtos.response.CreateFaculityResponseDTO;
+import com.universityapp.faculities.dtos.response.UpdateFaculityResponseDTO;
 import com.universityapp.faculities.mappers.FaculityMapper;
 import com.universityapp.faculities.repositories.IFaculityRepository;
 import com.universityapp.faculities.services.IFaculityService;
@@ -44,6 +47,15 @@ public class FaculityService implements IFaculityService {
         // map to response and return
         return faculityDTOs.stream().map(faculity -> this.faculityMapper.toCreateFaculityResponseDTO(faculity))
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public UpdateFaculityResponseDTO updateFaculity(UUID id, UpdateFaculityRequestDTO request) {
+        // map to internal
+        UpdateFaculityDTO internal = this.faculityMapper.toUpdateFaculityDTO(request);
+        this.faculityRepository.updateFaculity(id, internal);
+        return this.faculityMapper.toUpdateFaculityResponseDTO(id, internal);
     }
 
 }

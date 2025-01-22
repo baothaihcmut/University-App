@@ -1,7 +1,5 @@
 package com.universityapp.faculities.dtos.request;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateFaculityRequestDTO {
-    @NotNull()
-    @NotEmpty()
+public class UpdateFaculityRequestDTO {
     private String name;
 }

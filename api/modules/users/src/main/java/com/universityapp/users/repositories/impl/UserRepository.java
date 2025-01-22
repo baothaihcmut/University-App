@@ -7,8 +7,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import com.universityapp.auth.dtos.internal.CreateUserDTO;
-import com.universityapp.common.dtos.FindByCriteriaDTO;
 import com.universityapp.common.enums.FindByCriteriaType;
+import com.universityapp.common.filters.FilterDTO;
 import com.universityapp.users.dtos.internal.UpdateUserDTO;
 import com.universityapp.users.dtos.internal.UserDTO;
 import com.universityapp.users.repositories.IUserRepository;
@@ -93,7 +93,7 @@ public class UserRepository implements IUserRepository {
         query.executeUpdate();
     }
 
-    public List<UserDTO> findUserByCriteria(List<FindByCriteriaDTO<UserField>> dtos, FindByCriteriaType type) {
+    public List<UserDTO> findUserByCriteria(List<FilterDTO<UserField>> dtos, FindByCriteriaType type) {
         StringBuilder condition = new StringBuilder();
         for (int i = 0; i < dtos.size(); ++i) {
             if (condition.length() != 0) {
@@ -124,7 +124,6 @@ public class UserRepository implements IUserRepository {
                     is_active AS isActive
                 FROM users
                 WHERE (%s)
-                LIMIT 1
                                 """, condition.toString());
 
         Query query = this.entityManager.createNativeQuery(sql, UserDTO.class);

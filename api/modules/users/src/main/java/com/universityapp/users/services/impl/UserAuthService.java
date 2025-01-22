@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.universityapp.auth.dtos.internal.UserDTO;
 import com.universityapp.auth.services.IUserAuthService;
-import com.universityapp.common.dtos.FindByCriteriaDTO;
 import com.universityapp.common.enums.FindByCriteriaType;
+import com.universityapp.common.filters.FilterDTO;
 import com.universityapp.users.dtos.internal.UpdateUserDTO;
 import com.universityapp.users.repositories.IUserRepository;
 import com.universityapp.users.repositories.impl.UserField;
@@ -26,7 +26,7 @@ public class UserAuthService implements IUserAuthService {
     public Optional<UserDTO> findUserByEmail(String email) {
         var user = this.userRepository
                 .findUserByCriteria(
-                        List.of(FindByCriteriaDTO.<UserField>builder().criterion(UserField.EMAIL).value(email).build()),
+                        List.of(FilterDTO.<UserField>builder().criterion(UserField.EMAIL).value(email).build()),
                         FindByCriteriaType.AND);
 
         if (user.size() > 0) {
@@ -61,7 +61,7 @@ public class UserAuthService implements IUserAuthService {
     public Optional<UserDTO> findUserByPhoneNumber(String phoneNumber) {
         var user = this.userRepository
                 .findUserByCriteria(
-                        List.of(FindByCriteriaDTO.<UserField>builder().criterion(UserField.PHONE_NUMBER)
+                        List.of(FilterDTO.<UserField>builder().criterion(UserField.PHONE_NUMBER)
                                 .value(phoneNumber).build()),
                         FindByCriteriaType.AND);
 

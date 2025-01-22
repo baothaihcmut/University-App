@@ -11,8 +11,8 @@ import com.universityapp.admin.repositories.IAdminRepository;
 import com.universityapp.admin.repositories.impl.AdminFilterField;
 import com.universityapp.auth.dtos.internal.AdminDTO;
 import com.universityapp.auth.services.IAdminAuthService;
-import com.universityapp.common.dtos.FindByCriteriaDTO;
 import com.universityapp.common.enums.FindByCriteriaType;
+import com.universityapp.common.filters.FilterDTO;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class AdminAuthService implements IAdminAuthService {
     public Optional<AdminDTO> findAdminByEmail(String email) {
 
         List<com.universityapp.admin.dtos.internal.AdminDTO> admins = this.adminRepository.findAdminByCriteria(
-                List.of(FindByCriteriaDTO.<AdminFilterField>builder().criterion(AdminFilterField.EMAIL).value(email)
+                List.of(FilterDTO.<AdminFilterField>builder().criterion(AdminFilterField.EMAIL).value(email)
                         .build()),
                 FindByCriteriaType.AND);
         if (admins.size() == 0) {

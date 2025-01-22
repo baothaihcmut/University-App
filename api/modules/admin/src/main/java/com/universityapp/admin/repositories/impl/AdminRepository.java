@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.universityapp.admin.dtos.internal.AdminDTO;
 import com.universityapp.admin.dtos.internal.UpdateAdminDTO;
 import com.universityapp.admin.repositories.IAdminRepository;
-import com.universityapp.common.dtos.FindByCriteriaDTO;
 import com.universityapp.common.enums.FindByCriteriaType;
+import com.universityapp.common.filters.FilterDTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,7 +24,7 @@ public class AdminRepository implements IAdminRepository {
     private EntityManager entityManager;
 
     @Override
-    public List<AdminDTO> findAdminByCriteria(List<FindByCriteriaDTO<AdminFilterField>> dtos, FindByCriteriaType type) {
+    public List<AdminDTO> findAdminByCriteria(List<FilterDTO<AdminFilterField>> dtos, FindByCriteriaType type) {
         StringBuilder condition = new StringBuilder();
         for (int i = 0; i < dtos.size(); ++i) {
             if (condition.length() != 0) {
