@@ -17,4 +17,6 @@ public interface IUserRepository {
 
     List<UserDTO> findUserByCriteria(List<FilterDTO<UserField>> dtos, FindByCriteriaType type);
 
+    void updateInfoUser(UUID id, UserDTO user);
+
 }

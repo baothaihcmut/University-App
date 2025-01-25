@@ -158,4 +158,9 @@ public class UserRepository implements IUserRepository {
         Query q = this.entityManager.createNativeQuery(sql, UserDTO.class);
         System.out.println((UserDTO) q.getSingleResult());
     }
+
+    @Transactional
+    public void updateInfoUser(UUID id, UserDTO user) {
+
+    }
 }
