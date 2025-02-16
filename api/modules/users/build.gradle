@@ -1,7 +1,0 @@
-dependencies {
-    implementation project(":modules:auth")
-    implementation project(":modules:files")
-    implementation project(":modules:majors")
-    implementation project(":common")
-
-}
