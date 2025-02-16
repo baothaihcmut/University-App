@@ -1,4 +1,4 @@
-package com.universityapp.course_students.entities;
+package com.universityapp.common.entities;
 
 import java.util.UUID;
 

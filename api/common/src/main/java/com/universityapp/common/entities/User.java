@@ -3,6 +3,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.universityapp.common.enums.Role;
 
@@ -10,6 +13,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -74,8 +78,18 @@ public class User {
     @JsonManagedReference
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
     private List<Dependent> dependents;
+
+
+    @OneToMany(mappedBy = "receiver")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Notification> receiveNotifications;
+
+    @OneToMany(mappedBy = "sender")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Notification> sendNotifications;
 
 }

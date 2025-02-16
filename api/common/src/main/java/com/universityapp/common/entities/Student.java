@@ -1,6 +1,10 @@
 package com.universityapp.common.entities;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -10,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -44,4 +49,9 @@ public class Student {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
+
+    @OneToMany(mappedBy = "student")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<StudentSubject> subjectScores;
 }

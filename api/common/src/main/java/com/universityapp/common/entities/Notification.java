@@ -8,6 +8,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,16 +22,17 @@ import lombok.Data;
 public class Notification {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "receiver_id", nullable = false)
-    private User receiverId;
+    private User receiver;
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
-    private User senderId;
+    private User sender;
 
     @Column(name = "title", nullable = false)
     private String title;

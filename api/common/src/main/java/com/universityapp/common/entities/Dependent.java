@@ -8,6 +8,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,6 +23,7 @@ import lombok.Data;
 public class Dependent {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "dependent_id")
     private UUID dependentId;
 
@@ -36,7 +40,7 @@ public class Dependent {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;

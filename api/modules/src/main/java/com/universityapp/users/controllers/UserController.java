@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.universityapp.auth.dtos.request.LoginRequestDTO;
-import com.universityapp.auth.services.IAuthService;
 import com.universityapp.common.response.AppResponse;
 import com.universityapp.users.services.impl.UserService;
 

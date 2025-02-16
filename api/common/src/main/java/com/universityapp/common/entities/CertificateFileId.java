@@ -1,4 +1,4 @@
-package com.universityapp.certificates.entities;
+package com.universityapp.common.entities;
 
 import java.io.Serializable;
 import java.util.UUID;

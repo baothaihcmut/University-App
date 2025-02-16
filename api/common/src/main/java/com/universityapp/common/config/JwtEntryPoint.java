@@ -1,4 +1,4 @@
-package com.universityapp.auth.configs;
+package com.universityapp.common.config;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

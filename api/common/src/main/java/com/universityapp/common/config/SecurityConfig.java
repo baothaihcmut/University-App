@@ -1,4 +1,4 @@
-package com.universityapp.auth.configs;
+package com.universityapp.common.config;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
