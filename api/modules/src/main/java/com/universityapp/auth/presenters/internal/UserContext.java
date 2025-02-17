@@ -1,4 +1,4 @@
-package com.universityapp.auth.dtos.internal;
+package com.universityapp.auth.presenters.internal;
 import java.util.UUID;
 
 import com.universityapp.common.enums.Role;

@@ -1,6 +1,6 @@
-package com.universityapp.users.dtos.internal;
-
+package com.universityapp.auth.presenters.internal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 import com.universityapp.common.enums.Role;
 
@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateUserDTO {
+public class CreateUserDTO {
+    private UUID userId;
 
     private String firstName;
 

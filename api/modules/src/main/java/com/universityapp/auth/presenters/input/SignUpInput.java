@@ -1,4 +1,4 @@
-package com.universityapp.auth.dtos.request;
+package com.universityapp.auth.presenters.input;
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.Email;
@@ -9,7 +9,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class SignUpRequestDTO {
+public class SignUpInput {
 
     @NotNull(message = "First name is required")
     private String firstName;

@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.universityapp.common.enums.Role;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -50,6 +51,7 @@ public class User {
     @OneToOne
     @JoinColumn(name = "image_id", nullable = true)
     private File image;
+    
 
     @Column(name = "birthplace", length = 255)
     private String birthplace;
@@ -70,11 +72,11 @@ public class User {
     @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean isActive;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Student student;
+    private Student student;    
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonManagedReference
     private Teacher teacher;
 
@@ -91,5 +93,16 @@ public class User {
     @OneToMany(mappedBy = "sender")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Notification> sendNotifications;
+
+
+    public void setStudent(Student student) {
+        student.setUser(this);
+        this.student = student;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        teacher.setUser(this);
+        this.teacher = teacher;
+    }
 
 }

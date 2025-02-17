@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.universityapp.auth.dtos.request.LoginRequestDTO;
-import com.universityapp.auth.dtos.request.SignUpRequestDTO;
-import com.universityapp.auth.services.IAuthService;
+import com.universityapp.auth.interactors.AuthInteractor;
+import com.universityapp.auth.presenters.input.LoginInput;
 import com.universityapp.common.response.AppResponse;
 
 import jakarta.validation.Valid;
@@ -18,20 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final IAuthService authService;
+    private final AuthInteractor authInteractor;
 
     @PostMapping("/log-in")
-    public ResponseEntity<AppResponse> logIn(@RequestBody @Valid LoginRequestDTO dto) throws Exception {
-        return AppResponse.initResponse(HttpStatus.CREATED, true, "Login success", this.authService.logIn(dto));
+    public ResponseEntity<AppResponse> logIn(@RequestBody @Valid LoginInput dto) throws Exception {
+        return AppResponse.initResponse(HttpStatus.CREATED, true, "Login success", this.authInteractor.logIn(dto));
     }
 
-    @PostMapping("/sign-up")
-    public ResponseEntity<AppResponse> signUp(@RequestBody @Valid SignUpRequestDTO dto) throws Exception {
-        return AppResponse.initResponse(HttpStatus.CREATED, true, "Sign up success", this.authService.signUp(dto));
-    }
-
-    @PostMapping("/admin/log-in")
-    public ResponseEntity<AppResponse> adminLogin(@RequestBody @Valid LoginRequestDTO dto) throws Exception {
-        return AppResponse.initResponse(HttpStatus.CREATED, true, "Log in success", this.authService.adminLogin(dto));
-    }
+   
 }
