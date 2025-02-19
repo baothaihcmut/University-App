@@ -1,20 +1,17 @@
 package com.universityapp.common.entities;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.universityapp.common.enums.DependentType;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.UUID;
 import lombok.Data;
 
 @Data
@@ -23,7 +20,6 @@ import lombok.Data;
 public class Dependent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "dependent_id")
     private UUID dependentId;
 
@@ -44,5 +40,4 @@ public class Dependent {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
-
 }

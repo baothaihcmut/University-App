@@ -1,19 +1,16 @@
 package com.universityapp.common.entities;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 import com.universityapp.common.enums.NotificationStatus;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.Data;
 
 @Data
@@ -22,7 +19,6 @@ import lombok.Data;
 public class Notification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID id;
 

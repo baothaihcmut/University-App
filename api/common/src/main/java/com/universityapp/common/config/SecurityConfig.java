@@ -1,7 +1,8 @@
 package com.universityapp.common.config;
-import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.universityapp.common.properties.JwtProperties;
+import javax.crypto.spec.SecretKeySpec;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,17 +22,19 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import lombok.RequiredArgsConstructor;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-    @Value("${jwt.access_token.sign_key}")
-    private String signerKey;
 
-    private static final String[] PUBLIC_ENDPOINTS = { "/auth/log-in", "/auth/sign-up", "/auth/admin/log-in" };
+    private final JwtProperties jwtProperties;
+
+    private static final String[] PUBLIC_ENDPOINTS = {
+        "/auth/log-in",
+        "/auth/sign-up",
+        "/auth/admin/log-in",
+    };
 
     private final AccessDeniedHandler accessDeniedHandler;
 
@@ -41,17 +44,31 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(requests -> requests
-                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                .anyRequest().authenticated());
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+        throws Exception {
+        http.authorizeHttpRequests(requests ->
+            requests
+                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+        );
 
-        http.oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwt -> jwt
-                        .decoder(jwtDecoder())
-                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-                .authenticationEntryPoint(new JwtEntryPoint()))
-                .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler));
+        http
+            .oauth2ResourceServer(oauth2 ->
+                oauth2
+                    .jwt(jwt ->
+                        jwt
+                            .decoder(jwtDecoder())
+                            .jwtAuthenticationConverter(
+                                jwtAuthenticationConverter()
+                            )
+                    )
+                    .authenticationEntryPoint(new JwtEntryPoint())
+            )
+            .exceptionHandling(exception ->
+                exception.accessDeniedHandler(accessDeniedHandler)
+            );
 
         http.csrf(csrf -> csrf.disable());
 
@@ -60,11 +77,13 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HmacSHA512");
-        return NimbusJwtDecoder
-                .withSecretKey(secretKeySpec)
-                .macAlgorithm(MacAlgorithm.HS256)
-                .build();
+        SecretKeySpec secretKeySpec = new SecretKeySpec(
+            jwtProperties.getAccessToken().getSecret().getBytes(),
+            "HmacSHA512"
+        );
+        return NimbusJwtDecoder.withSecretKey(secretKeySpec)
+            .macAlgorithm(MacAlgorithm.HS256)
+            .build();
     }
 
     @Bean
@@ -74,7 +93,8 @@ public class SecurityConfig {
         corsConfig.addAllowedMethod("*");
         corsConfig.addAllowedHeader("*");
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source =
+            new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
 
         return new CorsFilter(source);
@@ -82,11 +102,15 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter =
+            new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
 
-        JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
-        authenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+        JwtAuthenticationConverter authenticationConverter =
+            new JwtAuthenticationConverter();
+        authenticationConverter.setJwtGrantedAuthoritiesConverter(
+            grantedAuthoritiesConverter
+        );
 
         return authenticationConverter;
     }

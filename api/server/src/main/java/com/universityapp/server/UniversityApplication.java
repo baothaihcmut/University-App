@@ -1,31 +1,21 @@
 package com.universityapp.server;
 
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication(scanBasePackages = "com.universityapp")
-@EntityScan(basePackages = {
-        "com.universityapp.users.entities",
-        "com.universityapp.files.entities",
-        "com.universityapp.admin.entities",
-        "com.universityapp.certificates.entities",
-        "com.universityapp.faculities.entities",
-        "com.universityapp.majors.entities",
-        "com.universityapp.faculity_teachers.entities",
-        "com.universityapp.major_teachers.entities",
-        "com.universityapp.subjects.entities",
-        "com.universityapp.subject_teachers.entities",
-        "com.universityapp.courses.entities",
-        "com.universityapp.student_subjects.entities",
-        "com.universityapp.notification.entities",
-        "com.universityapp.course_students.entities",
-        "com.universityapp.common.enums"
-})
+@EnableAspectJAutoProxy
+@EntityScan(basePackages = "com.universityapp.common.entities")
 public class UniversityApplication {
 
     public static void main(String[] args) {
+        ((Logger) LoggerFactory.getLogger(UniversityApplication.class)).info(
+                "Startedddd"
+            );
         SpringApplication.run(UniversityApplication.class, args);
     }
-
 }

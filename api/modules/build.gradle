@@ -1,5 +1,6 @@
 dependencies {
     implementation project(":common")
-    
+   implementation 'org.springframework.security:spring-security-oauth2-jose'
+    implementation 'com.nimbusds:nimbus-jose-jwt:9.1.2'
 
 }

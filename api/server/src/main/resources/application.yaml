@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:postgresql://ep-jolly-boat-a1eujht2.ap-southeast-1.aws.neon.tech/universityapp?sslmode=require}
-    username: ${DB_USERNAME:universityapp_owner}
-    password: ${DB_PASSWORD:cw9l6MhFIuJx}
+    url: ${DB_URL:jdbc:postgresql://ep-bitter-cell-a4voat0v-pooler.us-east-1.aws.neon.tech/university-app?sslmode=require}
+    username: ${DB_USERNAME:neondb_owner}
+    password: ${DB_PASSWORD:npg_vlJsba5iB2gP}
     driverClassName: org.postgresql.Driver
   jpa:
     show-sql: true
@@ -17,11 +17,14 @@ spring:
 
 jwt:
   access_token:
-    sign_key: your_accesstoken_key111111111111111111111
-    expiration: 3
+    secret: your_accesstoken_key111111111111111111111
+    expiry: 3
   refresh_token:
-    sign_key: your_accesstoken_key111111111111111111111
-    expiration: 7
-
-    
-
+    secret: your_accesstoken_key111111111111111111111
+    expiry: 7
+logging:
+  level:
+    root: info # Set global log level to 'debug'
+    com.universityapp: info # Set specific log level for your package or class if needed
+  pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg MDC: [requestId=%X{requestId}, userId=%X{userId}]%n"
+  json: true # Use JSON format for logging
