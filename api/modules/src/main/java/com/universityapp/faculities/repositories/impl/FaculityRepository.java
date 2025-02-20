@@ -11,8 +11,7 @@ import com.universityapp.common.filters.FilterDTO;
 import com.universityapp.common.filters.FilterType;
 import com.universityapp.common.pagination.PaginationDTO;
 import com.universityapp.common.pagination.PaginationResultDTO;
-import com.universityapp.common.sorts.SortDTO;
-import com.universityapp.common.utils.FilterHelper;
+
 import com.universityapp.faculities.dtos.internal.CreateFaculityDTO;
 import com.universityapp.faculities.dtos.internal.FaculityDTO;
 import com.universityapp.faculities.dtos.internal.UpdateFaculityDTO;
@@ -91,42 +90,6 @@ public class FaculityRepository implements IFaculityRepository {
         q.executeUpdate();
     }
 
-    @Override
-    public PaginationResultDTO<FaculityDTO> findFaculityByCriteria(
-            List<FilterDTO<FaculityFilterField>> filters,
-            FilterType type,
-            List<SortDTO> sorts, PaginationDTO pagination) {
-        String baseQuery = """
-                SELECT
-                    f.faculity_id as faculityId,
-                    f.name as name
-                FROM faculities f
-                """;
-        // add where to query
-        baseQuery = filters != null ? FilterHelper.<FaculityFilterField>addFilterToQuery(baseQuery, filters, type)
-                : baseQuery;
-
-        // add order by to query
-        baseQuery = filters != null ? FilterHelper.addSortToQuery(baseQuery, sorts) : baseQuery;
-        Query query = this.entityManager.createNamedQuery(baseQuery, FaculityDTO.class);
-        // set parameter for query
-        query = filters != null ? FilterHelper.setParameterForFilter(query, filters) : query;
-        // set pagination
-        query = FilterHelper.setPaginationParam(query, pagination);
-        var resList = query.getResultList();
-        List<FaculityDTO> faculityDTOs = new ArrayList<>();
-        for (var res : resList) {
-            faculityDTOs.add((FaculityDTO) res);
-        }
-        // cout
-        String count = "SELECT COUNT(*) FROM faculities";
-        Query countQuery = this.entityManager.createNativeQuery(count, Integer.class);
-        Integer totalElement = (Integer) countQuery.getSingleResult();
-        return PaginationResultDTO.<FaculityDTO>builder().data(faculityDTOs)
-                .currentPage(pagination.getPage())
-                .totalPage(totalElement / pagination.getSize())
-                .totalElement(totalElement)
-                .build();
-    }
+    
 
 }

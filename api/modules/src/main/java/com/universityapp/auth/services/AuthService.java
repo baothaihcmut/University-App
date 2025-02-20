@@ -1,7 +1,8 @@
 package com.universityapp.auth.services;
 
-import com.universityapp.auth.presenters.internal.UserContext;
 import com.universityapp.common.enums.Role;
+import com.universityapp.common.models.UserContext;
+
 import java.util.UUID;
 
 public interface AuthService {

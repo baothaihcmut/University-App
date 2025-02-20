@@ -8,10 +8,10 @@ import com.universityapp.auth.presenters.input.SignUpInput;
 import com.universityapp.auth.presenters.output.LoginOutput;
 import com.universityapp.auth.presenters.output.TokenResponse;
 import com.universityapp.auth.services.AuthService;
-import com.universityapp.common.entities.User;
 import com.universityapp.common.exception.AppException;
 import com.universityapp.common.exception.ErrorCode;
 import com.universityapp.common.logger.LoggerUtil;
+import com.universityapp.users.entities.User;
 import com.universityapp.users.repositories.UserRepository;
 import java.util.Map;
 import java.util.UUID;
@@ -39,22 +39,22 @@ public class AuthInteractorImpl implements AuthInteractor {
                         input.getEmail()
                     ).orElseThrow(() -> {
                         // Log the failure if email does not exist
-                        // LoggerUtil.warn(
-                        //     logger,
-                        //     "user log in fail",
-                        //     Map.of(
-                        //         "detail",
-                        //         "email not exist",
-                        //         "email",
-                        //         input.getEmail()
-                        //     )
-                        // );
+                        LoggerUtil.warn(
+                            logger,
+                            "user log in fail",
+                            Map.of(
+                                "detail",
+                                "email not exist",
+                                "email",
+                                input.getEmail()
+                            )
+                        );
                         throw new AppException(
                             ErrorCode.BAD_CREDENTIALS_EXCEPTION
                         );
                     });
-
             // Check password match
+            
             if (
                 this.authService.checkPasswordMatch(
                         input.getPassword(),
@@ -135,7 +135,8 @@ public class AuthInteractorImpl implements AuthInteractor {
             this.authService.genRefreshToken(newUser.getUserId());
         //set refresh token
         user.setCurrentRefreshToken(refreshToken);
-        newUser = this.userRepository.createUser(newUser);
+        newUser = this.userRepository.save(newUser);
+        
         return LoginOutput.builder()
             .isActive(newUser.getIsActive())
             .role(newUser.getRole())

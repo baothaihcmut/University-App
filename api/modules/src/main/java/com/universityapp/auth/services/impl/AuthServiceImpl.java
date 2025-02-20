@@ -6,9 +6,9 @@ import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
-import com.universityapp.auth.presenters.internal.UserContext;
 import com.universityapp.auth.services.AuthService;
 import com.universityapp.common.enums.Role;
+import com.universityapp.common.models.UserContext;
 import com.universityapp.common.properties.JwtProperties;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -98,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
             })
             .filter(Objects::nonNull)
             .toArray(Role[]::new);
-        return new UserContext(UUID.fromString(id), roles);
+        return new UserContext(id,roles);
     }
 
     public String encodePassword(String password) {

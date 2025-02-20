@@ -24,7 +24,13 @@ jwt:
     expiry: 7
 logging:
   level:
-    root: info # Set global log level to 'debug'
-    com.universityapp: info # Set specific log level for your package or class if needed
-  pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg MDC: [requestId=%X{requestId}, userId=%X{userId}]%n"
-  json: true # Use JSON format for logging
+    root: INFO
+    com.universityapp: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+admin:
+  email: ${ADMIN_EMAIL:university_admin@hcmut.edu.vn}
+  password: ${ADMIN_PASSWORD:university_admin}
+  first_name: ${ADMIN_FIRSTNAME:university}
+  last_name: ${ADMIN_LASTNAME:admin}
+  phone_number: ${ADMIN_PHONENUMBER:0123456789}

@@ -2,6 +2,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 
     // Optional: If you're using JWT for authentication
     implementation 'org.springframework.security:spring-security-oauth2-jose'
