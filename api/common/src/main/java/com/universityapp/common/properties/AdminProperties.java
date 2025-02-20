@@ -1,12 +1,12 @@
 package com.universityapp.common.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 import lombok.Data;
 
 @ConfigurationProperties(prefix = "admin")
-@Component
+@ConfigurationPropertiesScan
 @Data
 public class AdminProperties {
     private String email;

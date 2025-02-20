@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:postgresql://ep-bitter-cell-a4voat0v-pooler.us-east-1.aws.neon.tech/university-app?sslmode=require}
+    url: ${DB_URL:jdbc:postgresql://ep-tight-glitter-a17vbx2k-pooler.ap-southeast-1.aws.neon.tech/university-app?sslmode=require}
     username: ${DB_USERNAME:neondb_owner}
-    password: ${DB_PASSWORD:npg_vlJsba5iB2gP}
+    password: ${DB_PASSWORD:npg_ARFzU8NZupg7}
     driverClassName: org.postgresql.Driver
   jpa:
     show-sql: true

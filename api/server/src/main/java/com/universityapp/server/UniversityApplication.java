@@ -1,19 +1,25 @@
 package com.universityapp.server;
 
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import lombok.RequiredArgsConstructor;
+
 
 @SpringBootApplication(scanBasePackages = "com.universityapp")
+@ConfigurationPropertiesScan(basePackages = {
+    "com.universityapp.common.properties"
+})
 @EnableAspectJAutoProxy
-@EnableJpaRepositories
-@EntityScan(basePackages = "com.universityapp.common.entities")
-public class UniversityApplication {
-
+@RequiredArgsConstructor
+public class UniversityApplication{
     public static void main(String[] args) {
         SpringApplication.run(UniversityApplication.class, args);
     }
+
+   
 }

@@ -3,6 +3,8 @@ package com.universityapp.common.config;
 import com.universityapp.common.properties.JwtProperties;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,7 +35,7 @@ public class SecurityConfig {
     private static final String[] PUBLIC_ENDPOINTS = {
         "/auth/log-in",
         "/auth/sign-up",
-        "/auth/admin/log-in",
+        "/admin/log-in",
     };
 
     private final AccessDeniedHandler accessDeniedHandler;
@@ -46,12 +48,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
         throws Exception {
-        http.authorizeHttpRequests(requests ->
+            http.authorizeHttpRequests(requests ->
             requests
-                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                .requestMatchers("/auth/log-in").permitAll()
+                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                .anyRequest().authenticated()
         );
 
         http

@@ -2,26 +2,26 @@ package com.universityapp.server.initialize;
 
 import java.util.UUID;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.universityapp.admin.entities.Admin;
-import com.universityapp.admin.repositories.AdminRepository;
-import com.universityapp.auth.services.AuthService;
 import com.universityapp.common.properties.AdminProperties;
+import com.universityapp.modules.admin.entities.Admin;
+import com.universityapp.modules.admin.repositories.AdminRepository;
+import com.universityapp.modules.auth.services.AuthService;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class AdminInitialize implements CommandLineRunner{
+public class AdminInitialize{
     private final AdminRepository adminRepository;
     private final AdminProperties adminProperties;
     private final AuthService authService;
-    @Override
-    public void run(String... args) throws Exception {
-        Admin existAdmin = this.adminRepository.findAdminByEmail(adminProperties.getEmail()).orElseGet(null);
-        if(existAdmin!=null) {
+
+    @PostConstruct
+    public void createAdmin()  {
+        if(this.adminRepository.findAdminByEmail(adminProperties.getEmail()).orElseGet(null)!=null) {
             return;
         }
         Admin admin = Admin.builder()
