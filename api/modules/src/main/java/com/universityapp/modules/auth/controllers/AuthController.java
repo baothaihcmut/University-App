@@ -24,5 +24,6 @@ public class AuthController {
         return AppResponse.initResponse(HttpStatus.CREATED, true, "Login success", this.authInteractor.logIn(dto));
     }
 
+
    
 }
