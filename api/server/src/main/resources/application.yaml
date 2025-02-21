@@ -14,6 +14,22 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+  redis:
+    host: ${REDIST_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: "" # If authentication is required, add your password here
+    database: 0
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USER:banbao22042004@gmail.com}
+    password: ${MAIL_PASSWORD:gxyf voua yyzu ybfv}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 jwt:
   access_token:

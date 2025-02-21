@@ -5,6 +5,7 @@ import com.universityapp.modules.auth.presenters.input.SignUpInput;
 import com.universityapp.modules.auth.presenters.output.LoginOutput;
 
 public interface AuthInteractor {
-    LoginOutput logIn(LoginInput input)  throws Exception;
-    LoginOutput SignUp(SignUpInput input) throws Exception;
+    LoginOutput logIn(LoginInput input) throws Exception;
+
+    String signUp(SignUpInput input) throws Exception;
 }

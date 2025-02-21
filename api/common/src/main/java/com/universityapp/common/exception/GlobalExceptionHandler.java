@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     // Method Not Allowed
     @ExceptionHandler(value = Exception.class)
     ResponseEntity<AppResponse> handleRuntimeException(RuntimeException exception) {
-
+        System.out.println("Errorrrr");
         System.out.println(exception);
         return AppResponse.initResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Internal error", null);
     }

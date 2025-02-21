@@ -1,4 +1,5 @@
 package com.universityapp.modules.auth.presenters.input;
+
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.Email;
@@ -25,7 +26,6 @@ public class SignUpInput {
     private String password;
 
     @NotNull(message = "Phone number is required")
-    @Pattern(regexp = "^(\\+?\\d{1,4}[-\\s]?)?(\\(?\\d{1,4}\\)?[-\\s]?)?\\d{7,10}$", message = "Phone number is invalid")
     private String phoneNumber;
 
     @NotNull(message = "Birthplace is required")
