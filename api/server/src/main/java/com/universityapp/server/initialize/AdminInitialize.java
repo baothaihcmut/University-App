@@ -14,25 +14,25 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class AdminInitialize{
+public class AdminInitialize {
     private final AdminRepository adminRepository;
     private final AdminProperties adminProperties;
     private final AuthService authService;
 
     @PostConstruct
-    public void createAdmin()  {
-        if(this.adminRepository.findAdminByEmail(adminProperties.getEmail()).orElse(null)!=null) {
+    public void createAdmin() {
+        if (this.adminRepository.findAdminByEmail(adminProperties.getEmail()).orElse(null) != null) {
             return;
         }
         Admin admin = Admin.builder()
-                           .id(UUID.randomUUID())
-                           .email(adminProperties.getEmail())
-                           .password(this.authService.encodePassword(adminProperties.getPassword()))
-                           .firstName(adminProperties.getFirstName())
-                           .lastName(adminProperties.getLastName())
-                           .phoneNumber(adminProperties.getPhoneNumber())
-                           .build();
+                .id(UUID.randomUUID())
+                .email(adminProperties.getEmail())
+                .password(this.authService.encodePassword(adminProperties.getPassword()))
+                .firstName(adminProperties.getFirstName())
+                .lastName(adminProperties.getLastName())
+                .phoneNumber(adminProperties.getPhoneNumber())
+                .build();
         adminRepository.save(admin);
     }
-    
+
 }

@@ -32,21 +32,20 @@ public class AuthController {
             @RequestBody @Valid SignUpInput input) throws Exception {
         authInteractor.signUp(input);
         return AppResponse.initResponse(
-                HttpStatus.CREATED, 
-                true, 
+                HttpStatus.CREATED,
+                true,
                 "Sign up success",
                 null);
     }
 
     @PostMapping("/confirm")
     public ResponseEntity<AppResponse> confirm(
-        @RequestBody @Valid ConfirmSignUpInput input
-    ) throws Exception{
+            @RequestBody @Valid ConfirmSignUpInput input) throws Exception {
         return AppResponse.initResponse(
-            HttpStatus.CREATED, 
-            true, 
-            "Confirm sign up success", 
-            this.authInteractor.confirmSignUp(input));
+                HttpStatus.CREATED,
+                true,
+                "Confirm sign up success",
+                this.authInteractor.confirmSignUp(input));
     }
-    
+
 }

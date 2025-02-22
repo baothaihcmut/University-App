@@ -37,6 +37,7 @@ public class AuthInteractorImpl implements AuthInteractor {
     private final ApplicationEventPublisher eventPublisher;
     private final Logger logger = (Logger) LoggerFactory.getLogger(
             AuthInteractorImpl.class);
+            AuthInteractorImpl.class);
 
         public LoginOutput logIn(LoginInput input) throws Exception {
                 try {

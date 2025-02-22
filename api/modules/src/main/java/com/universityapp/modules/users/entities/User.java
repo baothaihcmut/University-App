@@ -30,6 +30,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
@@ -50,7 +51,7 @@ public class User {
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", columnDefinition = "TEXT",nullable = true)
+    @Column(name = "password", columnDefinition = "TEXT", nullable = true)
     private String password;
 
     @Column(name = "current_refresh_token", columnDefinition = "TEXT", nullable = true)
@@ -63,7 +64,7 @@ public class User {
     @JoinColumn(name = "image_id", nullable = true)
     private File image;
 
-    @Column(name = "birthplace", length = 255, nullable =  true)
+    @Column(name = "birthplace", length = 255, nullable = true)
     private String birthplace;
 
     @Column(name = "birthday", nullable = true)
@@ -83,16 +84,22 @@ public class User {
     private Boolean isActive;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Student student;
+    private Student student;
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Teacher teacher;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
+    @Builder.Default()
+    private List<Dependent> dependents = new ArrayList<>();
     @Builder.Default()
     private List<Dependent> dependents = new ArrayList<>();
 

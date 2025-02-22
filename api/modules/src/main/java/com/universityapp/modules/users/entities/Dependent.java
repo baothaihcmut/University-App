@@ -22,7 +22,7 @@ public class Dependent {
 
     @Id
     @Column(name = "dependent_id")
-    private UUID dependentId;
+    private UUID dependentID;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dependent_type", nullable = false)
@@ -37,7 +37,7 @@ public class Dependent {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
