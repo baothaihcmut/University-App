@@ -29,13 +29,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
 @Entity
 @Table(name = "users")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Data
 public class User {
 
     @Id
@@ -84,22 +83,16 @@ public class User {
     private Boolean isActive;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Student student;
-    private Student student;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Teacher teacher;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
-    @Builder.Default()
-    private List<Dependent> dependents = new ArrayList<>();
     @Builder.Default()
     private List<Dependent> dependents = new ArrayList<>();
 

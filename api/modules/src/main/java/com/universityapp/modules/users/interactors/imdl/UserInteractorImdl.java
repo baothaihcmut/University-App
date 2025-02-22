@@ -13,7 +13,6 @@ import com.universityapp.modules.users.interactors.UserInteractor;
 import com.universityapp.modules.users.mappers.UserMapper;
 import com.universityapp.modules.users.presenters.input.DependentInput;
 import com.universityapp.modules.users.repositories.DependentRespository;
-import com.universityapp.modules.users.repositories.StudentRespository;
 import com.universityapp.modules.users.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ public class UserInteractorImdl implements UserInteractor {
      private final AuthService authService;
      private final DependentRespository dependentRespository;
      private final UserRepository userRepository;
-     private final StudentRespository studentRepository;
      private final UserMapper userMapper;
 
      public List<Dependent> getDependents() {

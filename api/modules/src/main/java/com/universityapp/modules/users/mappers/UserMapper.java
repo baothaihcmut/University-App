@@ -10,7 +10,7 @@ import com.universityapp.common.enums.Role;
 import com.universityapp.modules.auth.presenters.input.SignUpInput;
 import com.universityapp.modules.users.entities.Dependent;
 import com.universityapp.modules.users.entities.User;
-import com.universityapp.modules.users.presenters.input.DependentDTO;
+import com.universityapp.modules.users.presenters.input.DependentInput.DependentDTO;
 import com.universityapp.modules.users.presenters.output.DependentOutputDTO;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
