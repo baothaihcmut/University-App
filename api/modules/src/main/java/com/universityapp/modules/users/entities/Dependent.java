@@ -22,7 +22,8 @@ public class Dependent {
 
     @Id
     @Column(name = "dependent_id")
-    private UUID dependentID;
+
+    private UUID dependentId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dependent_type", nullable = false)

@@ -31,20 +31,45 @@ public class UserInteractorImdl implements UserInteractor {
 
      public List<Dependent> createDependent(DependentInput input) {
           UUID userId = UUID.fromString(authService.getUserContext().getUserId());
-          Optional<User> user = userRepository.findById(userId);
+          User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
           List<Dependent> dependents = userMapper.toDependentList(input.getDependents());
           dependents.forEach(dependent -> {
-               dependent.setDependentID(UUID.randomUUID());
-               user.get().addDependent(dependent);
+               if (dependent.getDependentId() == null) {
+                    dependent.setDependentId(UUID.randomUUID());
+               }
+               dependent.setUser(user);
           });
-          return dependentRespository.saveAll(dependents);
+
+          return dependentRespository.saveAllAndFlush(dependents); // saveAll() hợp lệ hơn
      }
 
      public List<Dependent> updtaDependents(DependentInput input) {
           UUID userId = UUID.fromString(authService.getUserContext().getUserId());
           List<Dependent> dependents = userMapper.toDependentList(input.getDependents());
-          dependents.forEach(dependent -> dependent.setDependentID(userId));
+          dependents.forEach(dependent -> dependent.setDependentId(userId));
           return dependentRespository.saveAll(dependents);
+     }
+
+     public List<Dependent> getDependentsByUserId() {
+          UUID user_id = UUID.fromString(authService.getUserContext().getUserId());
+          List<Dependent> dependents = dependentRespository.findByUserId(user_id);
+          if (dependents.size() == 0) {
+               return null;
+          } else {
+               return dependents;
+          }
+     }
+
+     public void deleteDependent(UUID dependent_id) {
+          UUID user_id = UUID.fromString(authService.getUserContext().getUserId());
+          Optional<Dependent> dependent = dependentRespository.findByUserIdAndDependentId(user_id, dependent_id);
+          if (dependent.isPresent()) {
+               dependentRespository.delete(dependent.get());
+          } else {
+               throw new RuntimeException("Dependent not found Or User No permission");
+          }
      }
 
 }
