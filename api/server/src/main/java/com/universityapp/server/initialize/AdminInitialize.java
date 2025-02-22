@@ -21,7 +21,7 @@ public class AdminInitialize{
 
     @PostConstruct
     public void createAdmin()  {
-        if(this.adminRepository.findAdminByEmail(adminProperties.getEmail()).orElseGet(null)!=null) {
+        if(this.adminRepository.findAdminByEmail(adminProperties.getEmail()).orElse(null)!=null) {
             return;
         }
         Admin admin = Admin.builder()

@@ -41,38 +41,38 @@ public class User {
     @Column(name = "user_id")
     private UUID userId;
 
-    @Column(name = "first_name", length = 255, nullable = false)
+    @Column(name = "first_name", length = 255, nullable = true)
     private String firstName;
 
-    @Column(name = "last_name", length = 255, nullable = false)
+    @Column(name = "last_name", length = 255, nullable = true)
     private String lastName;
 
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", columnDefinition = "TEXT")
+    @Column(name = "password", columnDefinition = "TEXT",nullable = true)
     private String password;
 
-    @Column(name = "current_refresh_token", columnDefinition = "TEXT")
+    @Column(name = "current_refresh_token", columnDefinition = "TEXT", nullable = true)
     private String currentRefreshToken;
 
-    @Column(name = "phone_number", length = 20)
+    @Column(name = "phone_number", length = 20, nullable = true)
     private String phoneNumber;
 
     @OneToOne
     @JoinColumn(name = "image_id", nullable = true)
     private File image;
 
-    @Column(name = "birthplace", length = 255)
+    @Column(name = "birthplace", length = 255, nullable =  true)
     private String birthplace;
 
-    @Column(name = "birthday")
+    @Column(name = "birthday", nullable = true)
     private LocalDate birthday;
 
-    @Column(name = "social_network_info", columnDefinition = "TEXT")
+    @Column(name = "social_network_info", columnDefinition = "TEXT", nullable = true)
     private String socialNetworkInfo;
 
-    @Column(name = "address", columnDefinition = "TEXT")
+    @Column(name = "address", columnDefinition = "TEXT", nullable = true)
     private String address;
 
     @Enumerated(EnumType.STRING)
@@ -82,7 +82,7 @@ public class User {
     @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean isActive;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Student student;
 

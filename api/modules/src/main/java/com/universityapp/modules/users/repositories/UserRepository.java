@@ -18,8 +18,12 @@ import com.universityapp.modules.users.entities.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID>{
-    @Query("SELECT u from User u WHERE u.email = :email")
+    @Query("SELECT u from User u WHERE u.email = :email AND u.isActive=:isActive")
+    Optional<User> findUserByEmailAndIsActive(@Param("email") String email,@Param("isActive") boolean isActive);
+
+    @Query("SELECT u FROM User u WHERE u.email = :email")
     Optional<User> findUserByEmail(@Param("email") String email);
+
 
     @Query("SELECT u from User u RIGHT JOIN FETCH Student s")
     Page<User> findAllStudent(Pageable pageable);

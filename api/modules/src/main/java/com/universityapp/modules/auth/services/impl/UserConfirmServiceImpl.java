@@ -21,20 +21,34 @@ public class UserConfirmServiceImpl implements UserConfirmService {
 
     @Override
     public String storeUser(User user) throws Exception {
+        //store email in pending
+        redisService.setString(String.format("email_pending_verification:%s", user.getEmail()), "1", 30, TimeUnit.MINUTES);
         // geneate code
         String code = UUID.randomUUID().toString();
-        redisService.setObject(code, (Object) user, 30, TimeUnit.MINUTES);
+        redisService.setObject(String.format("email_verfication_code:%s", code), user, 30, TimeUnit.MINUTES);
         return code;
     }
 
     @Override
     public void sendEmail(String code, String email, String firstName, String lastName) throws Exception {
-        String url = String.format("localhost:8080/api/v1/confirm?code=%s", code);
+        String url = String.format("http://localhost:8080/api/v1/confirm?code=%s", code);
         emailService.sendEmail(email, "Email verification", "email-verification-template",
                 Map.of(
                         "firstName", firstName,
                         "lastName", lastName,
-                        "verficationUrl", url));
+                        "verificationUrl", url));
     }
+
+    @Override
+    public boolean isUserPendingVerification(String email) throws Exception {
+        return redisService.getValueString(String.format("email_pending_verification:%s", email)) != null ;
+    }
+
+    @Override
+    public User getUser(String code) throws Exception {
+        return redisService.getValueObject(String.format("email_verfication_code:%s", code), User.class);
+    }
+
+    
 
 }

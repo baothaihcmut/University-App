@@ -28,14 +28,11 @@ public class EmailService {
         }
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
         String htmlContent = templateEngine.process(templateName, context);
-
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlContent, true);
         helper.setFrom(mailProperties.getUsername());
-
         mailSender.send(message);
     }
 

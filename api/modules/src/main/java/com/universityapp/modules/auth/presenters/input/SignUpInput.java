@@ -11,7 +11,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class SignUpInput {
-
     @NotNull(message = "First name is required")
     private String firstName;
 
@@ -43,4 +42,5 @@ public class SignUpInput {
     @NotNull(message = "Role is required")
     @Pattern(regexp = "^(TEACHER|STUDENT)$", message = "Role must be either TEACHER or STUDENT")
     private String role;
+
 }

@@ -37,7 +37,7 @@ public class SecurityConfig {
             "/auth/log-in",
             "/auth/sign-up",
             "/admin/log-in",
-            "/auth/test"
+            "/auth/confirm"
     };
 
     private final AccessDeniedHandler accessDeniedHandler;

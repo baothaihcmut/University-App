@@ -15,13 +15,24 @@ public class RedisService {
     private final ObjectMapper objectMapper;
     private final StringRedisTemplate redisTemplate;
 
-    public void setObject(String key, Object value, long ttl, TimeUnit unit) throws Exception {
+    public <T> void setObject(String key, T value, long ttl, TimeUnit unit) throws Exception {
         String obj = objectMapper.writeValueAsString(value);
         redisTemplate.opsForValue().set(key, obj, ttl, unit);
     }
 
-    public <T> T getValue(String key, Class<T> clazz) throws Exception {
+    public void setString(String key, String value, long ttl, TimeUnit unit) throws Exception{
+        redisTemplate.opsForValue().set(key, value,ttl,unit);
+    }
+    public String getValueString(String key) throws Exception {
+        return redisTemplate.opsForValue().get(key);
+    }
+
+    public <T> T getValueObject(String key, Class<T> clazz) throws Exception {
         String res = redisTemplate.opsForValue().get(key);
         return res != null ? objectMapper.readValue(res, clazz) : null;
+    }
+
+    public void removeByKey(String key) throws Exception {
+        redisTemplate.delete(key);
     }
 }

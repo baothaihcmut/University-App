@@ -1,7 +1,6 @@
 package com.universityapp.server.initialize;
 
 import com.universityapp.common.enums.Role;
-import com.universityapp.modules.auth.services.AuthService;
 import com.universityapp.modules.users.entities.Student;
 import com.universityapp.modules.users.entities.Teacher;
 import com.universityapp.modules.users.entities.User;
@@ -18,14 +17,13 @@ import org.springframework.stereotype.Component;
 public class UserInitialize {
 
     private final UserRepository userRepository;
-    private final AuthService authService;
 
     @PostConstruct
     @Transactional
     public void createStudent() {
         if (
             this.userRepository.findUserByEmail(
-                    "hieu.hoangminh832004@hcmut.edu.vn"
+                    "thaibao22042k4@gmail.com"
                 ).orElse(null) !=
             null
         ) {
@@ -34,13 +32,8 @@ public class UserInitialize {
         User user = User.builder()
             .userId(UUID.randomUUID())
             .role(Role.STUDENT)
-            .email("hieu.hoangminh832004@hcmut.edu.vn")
-            .firstName("Hoang")
-            .lastName("Hieu")
-            .password(authService.encodePassword("student123"))
-            .birthday(LocalDate.now())
-            .birthplace("test")
-            .address("test")
+            .email("thaibao22042k4@gmail.com")
+            .isActive(false)
             .build();
         Student student = Student.builder()
             .studentNumber("2210264")
@@ -64,14 +57,9 @@ public class UserInitialize {
         }
         User user = User.builder()
             .userId(UUID.randomUUID())
-            .role(Role.STUDENT)
+            .role(Role.TEACHER)
             .email("bao.thaikhmt@hcmut.edu.vn")
-            .firstName("Thai")
-            .lastName("Bao")
-            .password(authService.encodePassword("teacher123"))
-            .birthday(LocalDate.now())
-            .birthplace("test")
-            .address("test")
+            .isActive(false)
             .build();
         Teacher teacher = Teacher.builder().teacherNumber("1234").build();
         user.setTeacher(teacher);

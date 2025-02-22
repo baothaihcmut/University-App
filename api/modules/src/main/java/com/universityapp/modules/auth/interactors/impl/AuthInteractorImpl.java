@@ -1,19 +1,21 @@
 package com.universityapp.modules.auth.interactors.impl;
 
 import java.util.Map;
-import java.util.UUID;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.universityapp.common.exception.AppException;
 import com.universityapp.common.exception.ErrorCode;
 import com.universityapp.common.logger.LoggerUtil;
+import com.universityapp.modules.auth.event.events.UserRegisteredEvent;
 import com.universityapp.modules.auth.interactors.AuthInteractor;
-import com.universityapp.modules.auth.mappers.UserMapper;
+import com.universityapp.modules.auth.presenters.input.ConfirmSignUpInput;
 import com.universityapp.modules.auth.presenters.input.LoginInput;
 import com.universityapp.modules.auth.presenters.input.SignUpInput;
+import com.universityapp.modules.auth.presenters.output.ConfirmSignUpOutput;
 import com.universityapp.modules.auth.presenters.output.LoginOutput;
 import com.universityapp.modules.auth.presenters.output.TokenResponse;
 import com.universityapp.modules.auth.services.AuthService;
@@ -22,6 +24,7 @@ import com.universityapp.modules.users.entities.User;
 import com.universityapp.modules.users.repositories.UserRepository;
 
 import ch.qos.logback.classic.Logger;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,91 +33,134 @@ public class AuthInteractorImpl implements AuthInteractor {
 
     private final UserRepository userRepository;
     private final AuthService authService;
-    private final UserMapper userMapper;
     private final UserConfirmService userConfirmService;
+    private final ApplicationEventPublisher eventPublisher;
     private final Logger logger = (Logger) LoggerFactory.getLogger(
             AuthInteractorImpl.class);
 
-    public LoginOutput logIn(LoginInput input) throws Exception {
-        try {
-            // Find user by email
-            User user = this.userRepository.findUserByEmail(
-                    input.getEmail()).orElseThrow(() -> {
-                        // Log the failure if email does not exist
+        public LoginOutput logIn(LoginInput input) throws Exception {
+                try {
+                // Find user by email
+                User user = this.userRepository.findUserByEmailAndIsActive(
+                        input.getEmail(), true).orElseThrow(() -> {
+                                // Log the failure if email does not exist
+                                LoggerUtil.warn(
+                                        logger,
+                                        "user log in fail",
+                                        Map.of(
+                                                "detail",
+                                                "email not exist",
+                                                "email",
+                                                input.getEmail()));
+                                throw new AppException(
+                                        ErrorCode.BAD_CREDENTIALS_EXCEPTION);
+                        });
+                // Check password match
+
+                if (this.authService.checkPasswordMatch(
+                        input.getPassword(),
+                        user.getPassword())) {
+                        // Log the failure if password is incorrect
                         LoggerUtil.warn(
                                 logger,
                                 "user log in fail",
                                 Map.of(
                                         "detail",
-                                        "email not exist",
+                                        "wrong password",
                                         "email",
                                         input.getEmail()));
-                        throw new AppException(
-                                ErrorCode.BAD_CREDENTIALS_EXCEPTION);
-                    });
-            // Check password match
+                        throw new AppException(ErrorCode.BAD_CREDENTIALS_EXCEPTION);
+                }
 
-            if (this.authService.checkPasswordMatch(
-                    input.getPassword(),
-                    user.getPassword())) {
-                // Log the failure if password is incorrect
+                // Generate token for the user
+                String accessToken = this.authService.genAccessToken(
+                        user.getUserId(),
+                        user.getRole());
+                String refreshToken = this.authService.genRefreshToken(user.getUserId());
+
+                // Log success
                 LoggerUtil.warn(
                         logger,
-                        "user log in fail",
-                        Map.of(
-                                "detail",
-                                "wrong password",
-                                "email",
-                                input.getEmail()));
-                throw new AppException(ErrorCode.BAD_CREDENTIALS_EXCEPTION);
-            }
+                        "user log in success",
+                        Map.of("email", input.getEmail()));
 
-            // Generate token for the user
-            String accessToken = this.authService.genAccessToken(
-                    user.getUserId(),
-                    user.getRole());
-            String refreshToken = this.authService.genRefreshToken(user.getUserId());
-
-            // Log success
-            LoggerUtil.warn(
-                    logger,
-                    "user log in success",
-                    Map.of("email", input.getEmail()));
-
-            // Return login output with token response
-            return LoginOutput.builder()
-                    .isActive(user.getIsActive())
-                    .role(user.getRole())
-                    .token(
-                            TokenResponse.builder()
-                                    .accessToken(accessToken)
-                                    .refreshToken(refreshToken)
-                                    .build())
-                    .build();
-        } finally {
-            // Always clear MDC context after processing the request
-            MDC.clear();
+                // Return login output with token response
+                return LoginOutput.builder()
+                        .role(user.getRole())
+                        .token(
+                                TokenResponse.builder()
+                                        .accessToken(accessToken)
+                                        .refreshToken(refreshToken)
+                                        .build())
+                        .build();
+                } finally {
+                // Always clear MDC context after processing the request
+                MDC.clear();
+                }
         }
-    }
 
-    public String signUp(SignUpInput input) throws Exception {
-        // check if email exist
-        User user = this.userRepository.findUserByEmail(input.getEmail()).orElse(null);
-        if (user != null) {
-            throw new AppException(ErrorCode.EMAIL_EXIST);
+        public void signUp(SignUpInput input) throws Exception {
+                // check if email exist
+                User user = this.userRepository
+                                .findUserByEmailAndIsActive(input.getEmail(),false)
+                                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_IN_SYTEM));
+                
+
+                //check if user pending confirm
+                if(this.userConfirmService.isUserPendingVerification(input.getEmail())) {
+                throw new AppException(ErrorCode.USER_PENDING_VERFICATION_SIGN_UP);
+                }
+
+                //set user new information
+                user.setFirstName(input.getFirstName());
+                user.setLastName(input.getLastName());
+                user.setPassword(input.getPhoneNumber());
+                user.setBirthday(input.getBirthday());
+                user.setBirthplace(input.getBirthplace());
+                user.setAddress(input.getAddress());
+                user.setPhoneNumber(input.getPhoneNumber());
+                user.setSocialNetworkInfo(input.getSocialNetworkInfo());
+                // encode password
+                user.setPassword(
+                        this.authService.encodePassword(input.getPassword()));
+                //activate user
+                String code = this.userConfirmService.storeUser(user);
+
+                //publish event send mail
+                UserRegisteredEvent event = new UserRegisteredEvent(user.getEmail(), code, user.getFirstName(), user.getLastName());
+                eventPublisher.publishEvent(event);
         }
-        // create new user in db
-        User newUser = this.userMapper.toUser(input);
-        // generate id for user
-        newUser.setUserId(UUID.randomUUID());
-        // set user not active
-        newUser.setIsActive(false);
-        // encode password
-        newUser.setPassword(
-                this.authService.encodePassword(newUser.getPassword()));
-        String code = this.userConfirmService.storeUser(newUser);
-        this.userConfirmService.sendEmail(code, newUser.getEmail(), newUser.getFirstName(), newUser.getLastName());
-        return code;
-    }
+
+        @Override
+        @Transactional
+        public ConfirmSignUpOutput confirmSignUp(ConfirmSignUpInput input) throws Exception {
+                //get user from redis
+                User user = this.userConfirmService.getUser(input.getCode());
+                if(user ==null) {
+                throw new AppException(ErrorCode.WRONG_VERIFICATION_CODE);
+                }
+                //activate user
+                user.setIsActive(true);
+                //gen refresh token 
+                String refreshToken = this.authService.genRefreshToken(user.getUserId());
+                user.setCurrentRefreshToken(refreshToken);
+                //store user to db
+                this.userRepository.save(user);
+                //gen access token
+                String accessToken = this.authService.genAccessToken(user.getUserId(), user.getRole());
+
+                return ConfirmSignUpOutput.builder()
+                                        .role(user.getRole())
+                                        .token(
+                                                TokenResponse.builder()
+                                                        .accessToken(accessToken)
+                                                        .refreshToken(refreshToken)
+                                                        .build()
+                                        ).build();
+        }
+
+
+    
+       
 
 }
