@@ -1,5 +1,7 @@
 package com.universityapp.modules.users.entities;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,9 +24,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
@@ -53,7 +57,6 @@ public class User {
     @OneToOne
     @JoinColumn(name = "image_id", nullable = true)
     private File image;
-    
 
     @Column(name = "birthplace", length = 255)
     private String birthplace;
@@ -74,19 +77,19 @@ public class User {
     @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean isActive;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Student student;    
+    private Student student;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
-    private List<Dependent> dependents;
-
+    @Builder.Default()
+    private List<Dependent> dependents = new ArrayList<>();
 
     @OneToMany(mappedBy = "receiver")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -96,7 +99,6 @@ public class User {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Notification> sendNotifications;
 
-
     public void setStudent(Student student) {
         student.setUser(this);
         this.student = student;
@@ -105,6 +107,11 @@ public class User {
     public void setTeacher(Teacher teacher) {
         teacher.setUser(this);
         this.teacher = teacher;
+    }
+
+    public void addDependent(Dependent dependent) {
+        dependent.setUser(this);
+        this.dependents.add(dependent);
     }
 
 }

@@ -1,4 +1,5 @@
 package com.universityapp.modules.auth.controllers;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,4 @@ public class AuthController {
         return AppResponse.initResponse(HttpStatus.CREATED, true, "Login success", this.authInteractor.logIn(dto));
     }
 
-
-   
 }
